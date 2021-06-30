@@ -1,5 +1,5 @@
 class Aniversari {
-  final String id;
+  final int id;
   final String nom;
   final DateTime dataNaixement;
   //final List<String> tags;

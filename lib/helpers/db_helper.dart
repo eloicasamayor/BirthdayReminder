@@ -8,20 +8,21 @@ class DBHelper {
       path.join(dbPath, 'aniversaris.db'),
       onCreate: (db, version) {
         return db.execute(
-            'CREATE TABLE aniversaris(id TEXT PRIMARY KEY, nom TEXT, dataNaixement DATETIME)');
+            'CREATE TABLE aniversaris(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, dataNaixement DATETIME)');
       },
       version: 1,
     );
   }
 
-  static Future<void> insert(String table, Map<String, Object> data) async {
+  static Future<int> insert(String table, Map<String, Object> data) async {
     final db = await DBHelper.database();
-    db.insert(
+    final id = await db.insert(
       table,
       data,
       conflictAlgorithm: sql.ConflictAlgorithm.replace,
     );
     print('inserted ==>table=$table data=$data ');
+    return id;
   }
 
   static Future<void> remove(String table, String id) async {

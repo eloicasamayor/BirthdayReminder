@@ -9,19 +9,21 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _listAniversaris = Provider.of<Aniversaris>(context);
+    final _listAniversaris = Provider.of<Aniversaris>(context).aniversaris;
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
       ),
-      body: Center(child: ListView.builder(itemBuilder: (ctx, index) {
-        return ListTile(
-          leading: Text(_listAniversaris.aniversaris[index].id),
-          title: Text(_listAniversaris.aniversaris[index].nom),
-          subtitle: Text(
-              _listAniversaris.aniversaris[index].dataNaixement.toString()),
-        );
-      })),
+      body: ListView.builder(
+        itemBuilder: (ctx, index) {
+          return ListTile(
+            leading: Text(_listAniversaris[index].id.toString()),
+            title: Text(_listAniversaris[index].nom),
+            subtitle: Text(_listAniversaris[index].dataNaixement.toString()),
+          );
+        },
+        itemCount: _listAniversaris.length,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
