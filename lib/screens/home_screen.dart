@@ -1,3 +1,5 @@
+import 'package:aniversaris/screens/lateral_menu.dart';
+
 import '../providers/aniversaris.dart';
 import '../models/aniversari.dart';
 import 'package:flutter/material.dart';
@@ -65,123 +67,166 @@ class _MyHomePageState extends State<MyHomePage> {
           _listAniversaris = Provider.of<Aniversaris>(context).aniversaris;
         }
     }
-
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.075,
-            color: Colors.black12,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(vertical: 10),
-              children: [
-                Text('Order by:  '),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      ordenar = orderAniversariBy.id;
-                    });
-                  },
-                  child: Text('id'),
-                  style: ButtonStyle(
-                    backgroundColor: ordenar == orderAniversariBy.id
-                        ? MaterialStateProperty.all<Color>(Colors.green)
-                        : null,
+      key: _scaffoldKey,
+      drawer: LateralMenu(),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              height: 45,
+              margin: EdgeInsets.only(top: 10, bottom: 6, right: 10, left: 10),
+              padding: EdgeInsets.symmetric(horizontal: 3),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () => _scaffoldKey.currentState!.openDrawer(),
+                    icon: Icon(Icons.menu),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      ordenar = orderAniversariBy.nom;
-                    });
-                  },
-                  child: Text('Name'),
-                  style: ButtonStyle(
-                    backgroundColor: ordenar == orderAniversariBy.nom
-                        ? MaterialStateProperty.all<Color>(Colors.green)
-                        : null,
+                  Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.66,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        isDense: true,
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        hintText: 'Search',
+                        hintStyle: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black38,
+                        ),
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                      ),
+                    ),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      ordenar = orderAniversariBy.cognom1;
-                    });
-                  },
-                  child: Text('Surname1'),
-                  style: ButtonStyle(
-                    backgroundColor: ordenar == orderAniversariBy.cognom1
-                        ? MaterialStateProperty.all<Color>(Colors.green)
-                        : null,
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.filter_alt),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      ordenar = orderAniversariBy.cognom2;
-                    });
-                  },
-                  child: Text('Surname2'),
-                  style: ButtonStyle(
-                    backgroundColor: ordenar == orderAniversariBy.cognom2
-                        ? MaterialStateProperty.all<Color>(Colors.green)
-                        : null,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      ordenar = orderAniversariBy.data;
-                    });
-                  },
-                  child: Text('birth date'),
-                  style: ButtonStyle(
-                    backgroundColor: ordenar == orderAniversariBy.data
-                        ? MaterialStateProperty.all<Color>(Colors.green)
-                        : null,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      ordenar = orderAniversariBy.mes;
-                    });
-                  },
-                  child: Text('month'),
-                  style: ButtonStyle(
-                    backgroundColor: ordenar == orderAniversariBy.mes
-                        ? MaterialStateProperty.all<Color>(Colors.green)
-                        : null,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.85,
-            color: Colors.green,
-            child: ListView.builder(
-              itemBuilder: (ctx, index) {
-                return ListTile(
-                  leading: Text(_listAniversaris[index].id.toString()),
-                  title: Text(
-                      '${_listAniversaris[index].nom} ${_listAniversaris[index].cognom1} ${_listAniversaris[index].cognom2}'),
-                  subtitle: Text(
-                    _listAniversaris[index]
-                        .dataNaixement
-                        .toString()
-                        .substring(0, 10),
+            Container(
+              height: 100,
+              color: Colors.black12,
+              width: double.infinity,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(vertical: 10),
+                children: [
+                  Text('order by:   '),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        ordenar = orderAniversariBy.id;
+                      });
+                    },
+                    child: Text('id'),
+                    style: ButtonStyle(
+                      backgroundColor: ordenar == orderAniversariBy.id
+                          ? MaterialStateProperty.all<Color>(Colors.green)
+                          : null,
+                    ),
                   ),
-                );
-              },
-              itemCount: _listAniversaris.length,
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        ordenar = orderAniversariBy.nom;
+                      });
+                    },
+                    child: Text('Name'),
+                    style: ButtonStyle(
+                      backgroundColor: ordenar == orderAniversariBy.nom
+                          ? MaterialStateProperty.all<Color>(Colors.green)
+                          : null,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        ordenar = orderAniversariBy.cognom1;
+                      });
+                    },
+                    child: Text('Surname1'),
+                    style: ButtonStyle(
+                      backgroundColor: ordenar == orderAniversariBy.cognom1
+                          ? MaterialStateProperty.all<Color>(Colors.green)
+                          : null,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        ordenar = orderAniversariBy.cognom2;
+                      });
+                    },
+                    child: Text('Surname2'),
+                    style: ButtonStyle(
+                      backgroundColor: ordenar == orderAniversariBy.cognom2
+                          ? MaterialStateProperty.all<Color>(Colors.green)
+                          : null,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        ordenar = orderAniversariBy.data;
+                      });
+                    },
+                    child: Text('birth date'),
+                    style: ButtonStyle(
+                      backgroundColor: ordenar == orderAniversariBy.data
+                          ? MaterialStateProperty.all<Color>(Colors.green)
+                          : null,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        ordenar = orderAniversariBy.mes;
+                      });
+                    },
+                    child: Text('month'),
+                    style: ButtonStyle(
+                      backgroundColor: ordenar == orderAniversariBy.mes
+                          ? MaterialStateProperty.all<Color>(Colors.green)
+                          : null,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Container(
+              height: MediaQuery.of(context).size.height * 0.60,
+              child: ListView.builder(
+                itemBuilder: (ctx, index) {
+                  return ListTile(
+                    leading: Text(_listAniversaris[index].id.toString()),
+                    title: Text(
+                        '${_listAniversaris[index].nom} ${_listAniversaris[index].cognom1} ${_listAniversaris[index].cognom2}'),
+                    subtitle: Text(
+                      _listAniversaris[index]
+                          .dataNaixement
+                          .toString()
+                          .substring(0, 10),
+                    ),
+                  );
+                },
+                itemCount: _listAniversaris.length,
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (ctx) => Aniversaris(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Bday Remind',
         theme: ThemeData(
           primarySwatch: Colors.blue,
