@@ -11,19 +11,22 @@ class NouAniversariScreen extends StatefulWidget {
 }
 
 class _NouAniversariScreenState extends State<NouAniversariScreen> {
-  final _tagsController = TextEditingController();
   final _nomController = TextEditingController();
   String? _dataNaixementStr;
   DateTime? _dataNaixementEscollida;
+
+  /*
+  final _tagsController = TextEditingController();
   String? _tagsInput;
   List<TagWidget> _tagsList = [];
-
-  /*void _novaTag() {
+  void _novaTag() {
     setState(() {
       _tagsList.add(TagWidget(_tagsController.text));
       _tagsController.clear();
     });
-  }*/
+  }
+  */
+
   void _guardarAniversari(_data) {
     if (_nomController.text.isEmpty || _data == null) {
       print('error, falta algo');

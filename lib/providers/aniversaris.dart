@@ -7,7 +7,31 @@ class Aniversaris with ChangeNotifier {
   List<Aniversari> _aniversaris = [];
 
   List<Aniversari> get aniversaris {
+    _aniversaris.sort(
+      (a, b) => a.id.compareTo(b.id),
+    );
     return [..._aniversaris];
+  }
+
+  List<Aniversari> get aniversarisOrdenatsPerNom {
+    _aniversaris.sort(
+      (a, b) => a.nom.compareTo(b.nom),
+    );
+    return _aniversaris;
+  }
+
+  List<Aniversari> get aniversarisOrdenatsPerData {
+    _aniversaris.sort(
+      (a, b) => a.dataNaixement.compareTo(b.dataNaixement),
+    );
+    return _aniversaris;
+  }
+
+  List<Aniversari> get aniversarisOrdenatsPerMes {
+    _aniversaris.sort(
+      (a, b) => a.dataNaixement.month.compareTo(b.dataNaixement.month),
+    );
+    return _aniversaris;
   }
 
   Future<void> addAniversari(

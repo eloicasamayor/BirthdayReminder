@@ -1,28 +1,148 @@
 import '../providers/aniversaris.dart';
+import '../models/aniversari.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './nou_aniversari_screen.dart';
 
-class MyHomePage extends StatelessWidget {
+enum orderAniversariBy { id, nom, data, mes }
+
+class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
   String title;
+  orderAniversariBy ordenar = orderAniversariBy.id;
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  orderAniversariBy ordenar = orderAniversariBy.id;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final _listAniversaris = Provider.of<Aniversaris>(context).aniversaris;
+    var _listAniversaris;
+    switch (ordenar) {
+      case orderAniversariBy.id:
+        {
+          _listAniversaris = Provider.of<Aniversaris>(context).aniversaris;
+        }
+        break;
+      case orderAniversariBy.nom:
+        {
+          _listAniversaris =
+              Provider.of<Aniversaris>(context).aniversarisOrdenatsPerNom;
+        }
+        break;
+      case orderAniversariBy.data:
+        {
+          _listAniversaris =
+              Provider.of<Aniversaris>(context).aniversarisOrdenatsPerData;
+        }
+        break;
+      case orderAniversariBy.mes:
+        {
+          _listAniversaris =
+              Provider.of<Aniversaris>(context).aniversarisOrdenatsPerMes;
+        }
+        break;
+      default:
+        {
+          _listAniversaris = Provider.of<Aniversaris>(context).aniversaris;
+        }
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(widget.title),
       ),
-      body: ListView.builder(
-        itemBuilder: (ctx, index) {
-          return ListTile(
-            leading: Text(_listAniversaris[index].id.toString()),
-            title: Text(_listAniversaris[index].nom),
-            subtitle: Text(_listAniversaris[index].dataNaixement.toString()),
-          );
-        },
-        itemCount: _listAniversaris.length,
+      body: Column(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.075,
+            color: Colors.black12,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(vertical: 10),
+              children: [
+                Text('Order by:  '),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      ordenar = orderAniversariBy.id;
+                    });
+                  },
+                  child: Text('id'),
+                  style: ButtonStyle(
+                    backgroundColor: ordenar == orderAniversariBy.id
+                        ? MaterialStateProperty.all<Color>(Colors.green)
+                        : null,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      ordenar = orderAniversariBy.nom;
+                    });
+                  },
+                  child: Text('Name'),
+                  style: ButtonStyle(
+                    backgroundColor: ordenar == orderAniversariBy.nom
+                        ? MaterialStateProperty.all<Color>(Colors.green)
+                        : null,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      ordenar = orderAniversariBy.data;
+                    });
+                  },
+                  child: Text('birth date'),
+                  style: ButtonStyle(
+                    backgroundColor: ordenar == orderAniversariBy.data
+                        ? MaterialStateProperty.all<Color>(Colors.green)
+                        : null,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      ordenar = orderAniversariBy.mes;
+                    });
+                  },
+                  child: Text('month'),
+                  style: ButtonStyle(
+                    backgroundColor: ordenar == orderAniversariBy.mes
+                        ? MaterialStateProperty.all<Color>(Colors.green)
+                        : null,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.75,
+            color: Colors.green,
+            child: ListView.builder(
+              itemBuilder: (ctx, index) {
+                return ListTile(
+                  leading: Text(_listAniversaris[index].id.toString()),
+                  title: Text(_listAniversaris[index].nom),
+                  subtitle: Text(
+                    _listAniversaris[index]
+                        .dataNaixement
+                        .toString()
+                        .substring(0, 10),
+                  ),
+                );
+              },
+              itemCount: _listAniversaris.length,
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
