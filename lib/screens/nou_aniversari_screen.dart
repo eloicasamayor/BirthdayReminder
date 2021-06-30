@@ -12,6 +12,8 @@ class NouAniversariScreen extends StatefulWidget {
 
 class _NouAniversariScreenState extends State<NouAniversariScreen> {
   final _nomController = TextEditingController();
+  final _cognom1Controller = TextEditingController();
+  final _cognom2Controller = TextEditingController();
   String? _dataNaixementStr;
   DateTime? _dataNaixementEscollida;
 
@@ -32,8 +34,12 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
       print('error, falta algo');
       return;
     } else {
-      Provider.of<Aniversaris>(context, listen: false)
-          .addAniversari(_nomController.text, _data);
+      Provider.of<Aniversaris>(context, listen: false).addAniversari(
+        _nomController.text,
+        _cognom1Controller.text,
+        _cognom2Controller.text,
+        _data,
+      );
     }
   }
 
@@ -48,8 +54,16 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           TextField(
-            decoration: InputDecoration(hintText: 'Nom'),
+            decoration: InputDecoration(hintText: 'Name'),
             controller: _nomController,
+          ),
+          TextField(
+            decoration: InputDecoration(hintText: 'First Surname'),
+            controller: _cognom1Controller,
+          ),
+          TextField(
+            decoration: InputDecoration(hintText: 'Second Surname'),
+            controller: _cognom2Controller,
           ),
           Row(
             children: [
@@ -86,7 +100,8 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
             onPressed: () => _guardarAniversari(_dataNaixementEscollida),
             icon: Icon(Icons.save),
             label: Text('Guardar'),
-          ), /*
+          ),
+          /*
           Stack(
             alignment: Alignment.centerRight,
             children: [

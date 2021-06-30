@@ -8,7 +8,7 @@ class DBHelper {
       path.join(dbPath, 'aniversaris.db'),
       onCreate: (db, version) {
         return db.execute(
-            'CREATE TABLE aniversaris(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, dataNaixement DATETIME)');
+            'CREATE TABLE aniversaris(id INTEGER PRIMARY KEY AUTOINCREMENT, nom TEXT, cognom1 TEXT, cognom2 TEXT, dataNaixement DATETIME)');
       },
       version: 1,
     );

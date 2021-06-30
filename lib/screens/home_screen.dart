@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './nou_aniversari_screen.dart';
 
-enum orderAniversariBy { id, nom, data, mes }
+enum orderAniversariBy { id, nom, cognom1, cognom2, data, mes }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -34,6 +34,18 @@ class _MyHomePageState extends State<MyHomePage> {
         {
           _listAniversaris =
               Provider.of<Aniversaris>(context).aniversarisOrdenatsPerNom;
+        }
+        break;
+      case orderAniversariBy.cognom1:
+        {
+          _listAniversaris =
+              Provider.of<Aniversaris>(context).aniversarisOrdenatsPerCognom1;
+        }
+        break;
+      case orderAniversariBy.cognom2:
+        {
+          _listAniversaris =
+              Provider.of<Aniversaris>(context).aniversarisOrdenatsPerCognom2;
         }
         break;
       case orderAniversariBy.data:
@@ -97,6 +109,32 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
+                      ordenar = orderAniversariBy.cognom1;
+                    });
+                  },
+                  child: Text('Surname1'),
+                  style: ButtonStyle(
+                    backgroundColor: ordenar == orderAniversariBy.cognom1
+                        ? MaterialStateProperty.all<Color>(Colors.green)
+                        : null,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      ordenar = orderAniversariBy.cognom2;
+                    });
+                  },
+                  child: Text('Surname2'),
+                  style: ButtonStyle(
+                    backgroundColor: ordenar == orderAniversariBy.cognom2
+                        ? MaterialStateProperty.all<Color>(Colors.green)
+                        : null,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
                       ordenar = orderAniversariBy.data;
                     });
                   },
@@ -124,13 +162,14 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.75,
+            height: MediaQuery.of(context).size.height * 0.85,
             color: Colors.green,
             child: ListView.builder(
               itemBuilder: (ctx, index) {
                 return ListTile(
                   leading: Text(_listAniversaris[index].id.toString()),
-                  title: Text(_listAniversaris[index].nom),
+                  title: Text(
+                      '${_listAniversaris[index].nom} ${_listAniversaris[index].cognom1} ${_listAniversaris[index].cognom2}'),
                   subtitle: Text(
                     _listAniversaris[index]
                         .dataNaixement
