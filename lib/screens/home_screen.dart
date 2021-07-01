@@ -29,15 +29,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void filterSearchResults(String query) {
     List<Aniversari> listAniversaris =
         Provider.of<Aniversaris>(context, listen: false).aniversaris;
-
+    query = query.toLowerCase();
     if (query.isNotEmpty) {
       List<Aniversari> dummyListData = [];
       listAniversaris.forEach((item) {
-        if (item.nom.contains(query)) {
+        if (item.nom.toLowerCase().contains(query)) {
           dummyListData.add(item);
-        } else if (item.cognom1.contains(query)) {
+        } else if (item.cognom1.toLowerCase().contains(query)) {
           dummyListData.add(item);
-        } else if (item.cognom2.contains(query)) {
+        } else if (item.cognom2.toLowerCase().contains(query)) {
           dummyListData.add(item);
         }
       });
