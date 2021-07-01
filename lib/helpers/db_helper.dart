@@ -31,7 +31,9 @@ class DBHelper {
   }
 
   static Future<List<Map<String, dynamic>>> getData(String table) async {
+    print('get data');
     final db = await DBHelper.database();
+    //print('${db.query(table)}');
     return db.query(table);
   }
 }

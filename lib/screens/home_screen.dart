@@ -20,53 +20,45 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   orderAniversariBy ordenar = orderAniversariBy.id;
   TextEditingController _searchFieldController = TextEditingController();
   var seeFilters = false;
+  static final GlobalKey<FormFieldState<String>> _searchFormKey =
+      GlobalKey<FormFieldState<String>>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool? isSearching = false;
+  List<Aniversari> listSearchResult = [];
+
+  void filterSearchResults(String query) {
+    List<Aniversari> listAniversaris =
+        Provider.of<Aniversaris>(context, listen: false).aniversaris;
+
+    if (query.isNotEmpty) {
+      List<Aniversari> dummyListData = [];
+      listAniversaris.forEach((item) {
+        if (item.nom.contains(query)) {
+          dummyListData.add(item);
+        } else if (item.cognom1.contains(query)) {
+          dummyListData.add(item);
+        } else if (item.cognom2.contains(query)) {
+          dummyListData.add(item);
+        }
+      });
+
+      setState(() {
+        isSearching = true;
+        listSearchResult.clear();
+        listSearchResult.addAll(dummyListData);
+      });
+      return;
+    } else {
+      setState(() {
+        isSearching = false;
+        //listAniversaris.clear();
+        //listAniversaris.addAll(listAniversaris);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    var _listAniversaris;
-
-    switch (ordenar) {
-      case orderAniversariBy.id:
-        {
-          _listAniversaris = Provider.of<Aniversaris>(context).aniversaris;
-        }
-        break;
-      case orderAniversariBy.nom:
-        {
-          _listAniversaris =
-              Provider.of<Aniversaris>(context).aniversarisOrdenatsPerNom;
-        }
-        break;
-      case orderAniversariBy.cognom1:
-        {
-          _listAniversaris =
-              Provider.of<Aniversaris>(context).aniversarisOrdenatsPerCognom1;
-        }
-        break;
-      case orderAniversariBy.cognom2:
-        {
-          _listAniversaris =
-              Provider.of<Aniversaris>(context).aniversarisOrdenatsPerCognom2;
-        }
-        break;
-      case orderAniversariBy.data:
-        {
-          _listAniversaris =
-              Provider.of<Aniversaris>(context).aniversarisOrdenatsPerData;
-        }
-        break;
-      case orderAniversariBy.mes:
-        {
-          _listAniversaris =
-              Provider.of<Aniversaris>(context).aniversarisOrdenatsPerMes;
-        }
-        break;
-      default:
-        {
-          _listAniversaris = Provider.of<Aniversaris>(context).aniversaris;
-        }
-    }
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
       key: _scaffoldKey,
       drawer: LateralMenu(),
@@ -86,19 +78,27 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             ),
             child: Row(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.1,
-                  child: IconButton(
-                    onPressed: () => _scaffoldKey.currentState!.openDrawer(),
-                    icon: Icon(Icons.menu),
+                if (isSearching != false)
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.1,
                   ),
-                ),
+                if (isSearching != true)
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    child: IconButton(
+                      onPressed: () => _scaffoldKey.currentState!.openDrawer(),
+                      icon: Icon(Icons.menu),
+                    ),
+                  ),
                 Container(
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.7,
                   child: TextField(
+                    onChanged: (value) {
+                      filterSearchResults(value);
+                    },
                     controller: _searchFieldController,
-                    key: Key('searchTextField'),
+                    key: _searchFormKey,
                     decoration: InputDecoration(
                       isDense: true,
                       border: InputBorder.none,
@@ -116,21 +116,38 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.1,
-                  alignment: Alignment.center,
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        seeFilters = !seeFilters;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.filter_alt,
-                      color: seeFilters ? Colors.amber : Colors.black87,
+                if (isSearching != false)
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      onPressed: () {
+                        _searchFieldController.clear();
+                        setState(() {
+                          isSearching = false;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.cancel_rounded,
+                      ),
                     ),
                   ),
-                ),
+                if (isSearching != true)
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          seeFilters = !seeFilters;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.filter_alt,
+                        color: seeFilters ? Colors.amber : Colors.black87,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
@@ -143,7 +160,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
+            AnimatedContainer(
+              duration: Duration(milliseconds: 300),
               color: Colors.black12,
               height: seeFilters ? 60 : 1,
               width: double.infinity,
@@ -233,26 +251,71 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 ],
               ),
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.40,
-              color: Colors.green,
-              child: ListView.builder(
-                itemBuilder: (ctx, index) {
-                  return ListTile(
-                    leading: Text(_listAniversaris[index].id.toString()),
-                    title: Text(
-                        '${_listAniversaris[index].nom} ${_listAniversaris[index].cognom1} ${_listAniversaris[index].cognom2}'),
-                    subtitle: Text(
-                      _listAniversaris[index]
-                          .dataNaixement
-                          .toString()
-                          .substring(0, 10),
-                    ),
-                  );
-                },
-                itemCount: _listAniversaris.length,
+            if (isSearching == true)
+              Expanded(
+                child: ListView.builder(
+                  itemBuilder: (ctx, index) {
+                    return ListTile(
+                      key: new Key(index.toString()),
+                      leading: CircleAvatar(
+                        child: Text(
+                            '${listSearchResult[index].nom.substring(0, 1).toUpperCase()}${listSearchResult[index].cognom1.substring(0, 1).toUpperCase()}'),
+                      ),
+                      //Text(listSearchResult[index].id.toString()),
+                      title: Text(
+                          '${listSearchResult[index].nom} ${listSearchResult[index].cognom1} ${listSearchResult[index].cognom2}'),
+                      subtitle: Text(
+                        listSearchResult[index]
+                            .dataNaixement
+                            .toString()
+                            .substring(0, 10),
+                      ),
+                    );
+                  },
+                  itemCount: listSearchResult.length,
+                ),
               ),
-            ),
+            if (isSearching != true)
+              Expanded(
+                child: FutureBuilder(
+                  future: Provider.of<Aniversaris>(
+                    context,
+                    listen: false,
+                  ).fetchAndSetAniversaris(ordenar),
+                  builder: (ctx, snapshot) =>
+                      snapshot.connectionState == ConnectionState.waiting
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Consumer<Aniversaris>(
+                              child: Center(
+                                child: Text('No birthdays yet'),
+                              ),
+                              builder: (ctx, aniversaris, _) {
+                                return ListView.builder(
+                                    itemCount: aniversaris.aniversaris.length,
+                                    itemBuilder: (ctx, i) {
+                                      return ListTile(
+                                        key: new Key(i.toString()),
+                                        leading: CircleAvatar(
+                                          child: Text(
+                                              '${aniversaris.aniversaris[i].nom.substring(0, 1).toUpperCase()}${aniversaris.aniversaris[i].cognom1.substring(0, 1).toUpperCase()}'),
+                                        ),
+                                        title: Text(
+                                            '${aniversaris.aniversarisOrdenados(ordenar)[i].nom} ${aniversaris.aniversarisOrdenados(ordenar)[i].cognom1} ${aniversaris.aniversarisOrdenados(ordenar)[i].cognom2}'),
+                                        subtitle: Text(
+                                          aniversaris
+                                              .aniversarisOrdenados(ordenar)[i]
+                                              .dataNaixement
+                                              .toString()
+                                              .substring(0, 10),
+                                        ),
+                                      );
+                                    });
+                              },
+                            ),
+                ),
+              ),
           ],
         ),
       ),
