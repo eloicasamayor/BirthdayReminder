@@ -16,16 +16,15 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   orderAniversariBy ordenar = orderAniversariBy.id;
-  @override
-  void initState() {
-    super.initState();
-  }
+  TextEditingController _searchFieldController = TextEditingController();
+  var seeFilters = false;
 
   @override
   Widget build(BuildContext context) {
     var _listAniversaris;
+
     switch (ordenar) {
       case orderAniversariBy.id:
         {
@@ -71,54 +70,82 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: LateralMenu(),
+      appBar: AppBar(
+        flexibleSpace: SafeArea(
+          child: Container(
+            margin: EdgeInsets.only(
+              top: 12,
+              bottom: 6,
+              right: MediaQuery.of(context).size.width * 0.05,
+              left: MediaQuery.of(context).size.width * 0.05,
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 0),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.1,
+                  child: IconButton(
+                    onPressed: () => _scaffoldKey.currentState!.openDrawer(),
+                    icon: Icon(Icons.menu),
+                  ),
+                ),
+                Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: TextField(
+                    controller: _searchFieldController,
+                    key: Key('searchTextField'),
+                    decoration: InputDecoration(
+                      isDense: true,
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      hintText: 'Search',
+                      hintStyle: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black38,
+                      ),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.1,
+                  alignment: Alignment.center,
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        seeFilters = !seeFilters;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.filter_alt,
+                      color: seeFilters ? Colors.amber : Colors.black87,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        automaticallyImplyLeading: false, // hides leading widget
+
+        backgroundColor: Colors.grey.shade300,
+      ),
       body: SafeArea(
         child: Column(
           children: [
             Container(
-              height: 45,
-              margin: EdgeInsets.only(top: 10, bottom: 6, right: 10, left: 10),
-              padding: EdgeInsets.symmetric(horizontal: 3),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () => _scaffoldKey.currentState!.openDrawer(),
-                    icon: Icon(Icons.menu),
-                  ),
-                  Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * 0.66,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        isDense: true,
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        hintText: 'Search',
-                        hintStyle: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black38,
-                        ),
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.filter_alt),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 100,
               color: Colors.black12,
+              height: seeFilters ? 60 : 1,
               width: double.infinity,
               child: ListView(
                 scrollDirection: Axis.horizontal,
@@ -207,7 +234,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.60,
+              height: MediaQuery.of(context).size.height * 0.40,
+              color: Colors.green,
               child: ListView.builder(
                 itemBuilder: (ctx, index) {
                   return ListTile(
