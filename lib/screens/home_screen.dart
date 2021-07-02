@@ -1,9 +1,11 @@
-import 'package:aniversaris/screens/lateral_menu.dart';
-
-import '../providers/aniversaris.dart';
-import '../models/aniversari.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import './lateral_menu.dart';
+import '../widgets/list_aniversaris.dart';
+import '../providers/aniversaris.dart';
+import '../models/aniversari.dart';
+
 import './nou_aniversari_screen.dart';
 
 enum orderAniversariBy { id, nom, cognom1, cognom2, data, mes }
@@ -253,27 +255,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             ),
             if (isSearching == true)
               Expanded(
-                child: ListView.builder(
-                  itemBuilder: (ctx, index) {
-                    return ListTile(
-                      key: new Key(index.toString()),
-                      leading: CircleAvatar(
-                        child: Text(
-                            '${listSearchResult[index].nom.substring(0, 1).toUpperCase()}${listSearchResult[index].cognom1.substring(0, 1).toUpperCase()}'),
-                      ),
-                      //Text(listSearchResult[index].id.toString()),
-                      title: Text(
-                          '${listSearchResult[index].nom} ${listSearchResult[index].cognom1} ${listSearchResult[index].cognom2}'),
-                      subtitle: Text(
-                        listSearchResult[index]
-                            .dataNaixement
-                            .toString()
-                            .substring(0, 10),
-                      ),
-                    );
-                  },
-                  itemCount: listSearchResult.length,
-                ),
+                child: ListAniversaris(listAniversaris: listSearchResult),
               ),
             if (isSearching != true)
               Expanded(
@@ -292,26 +274,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                 child: Text('No birthdays yet'),
                               ),
                               builder: (ctx, aniversaris, _) {
-                                return ListView.builder(
-                                    itemCount: aniversaris.aniversaris.length,
-                                    itemBuilder: (ctx, i) {
-                                      return ListTile(
-                                        key: new Key(i.toString()),
-                                        leading: CircleAvatar(
-                                          child: Text(
-                                              '${aniversaris.aniversaris[i].nom.substring(0, 1).toUpperCase()}${aniversaris.aniversaris[i].cognom1.substring(0, 1).toUpperCase()}'),
-                                        ),
-                                        title: Text(
-                                            '${aniversaris.aniversarisOrdenados(ordenar)[i].nom} ${aniversaris.aniversarisOrdenados(ordenar)[i].cognom1} ${aniversaris.aniversarisOrdenados(ordenar)[i].cognom2}'),
-                                        subtitle: Text(
-                                          aniversaris
-                                              .aniversarisOrdenados(ordenar)[i]
-                                              .dataNaixement
-                                              .toString()
-                                              .substring(0, 10),
-                                        ),
-                                      );
-                                    });
+                                return ListAniversaris(
+                                  listAniversaris: Provider.of<Aniversaris>(
+                                    context,
+                                    listen: false,
+                                  ).aniversarisOrdenados(ordenar),
+                                );
                               },
                             ),
                 ),
