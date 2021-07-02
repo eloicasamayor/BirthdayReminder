@@ -6,6 +6,8 @@ import '../providers/aniversaris.dart';
 import '../widgets/tag.dart';
 
 class NouAniversariScreen extends StatefulWidget {
+  final bool editando;
+  NouAniversariScreen(this.editando);
   @override
   _NouAniversariScreenState createState() => _NouAniversariScreenState();
 }
@@ -47,7 +49,7 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nou Aniversari'),
+        title: Text(widget.editando ? 'Editando' : 'Nou Aniversari'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

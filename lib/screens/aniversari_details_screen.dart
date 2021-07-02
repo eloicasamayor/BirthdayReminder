@@ -1,3 +1,4 @@
+import 'package:aniversaris/screens/nou_aniversari_screen.dart';
 import 'package:flutter/material.dart';
 
 class AniversariDetailsScreen extends StatelessWidget {
@@ -13,14 +14,64 @@ class AniversariDetailsScreen extends StatelessWidget {
     required this.dataNaixement,
   }) : super(key: key);
 
+  Future<String?> _dialogDelete(ctx) {
+    return showDialog<String>(
+      context: ctx,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('AlertDialog Title'),
+        content: const Text('AlertDialog description'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Details'),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+          IconButton(
+              onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: Text('Do you want to delete $nom?'),
+                      content: Text(
+                          '$nom $cognom1 $cognom2 birthday will be delted'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'OK'),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  ),
+              icon: Icon(Icons.delete)),
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return NouAniversariScreen(true);
+                    },
+                  ),
+                );
+              },
+              icon: Icon(Icons.edit)),
         ],
       ),
       body: Container(
