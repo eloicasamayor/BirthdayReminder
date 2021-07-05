@@ -23,7 +23,19 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Bday Remind',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.amber,
+          appBarTheme: AppBarTheme(color: Colors.grey[200]),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              textStyle: TextStyle(fontSize: 14),
+              minimumSize: Size.fromWidth(40),
+              onPrimary: Colors.black45,
+              primary: Colors.grey[400],
+              padding: EdgeInsets.all(7),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+            ),
+          ),
         ),
         home: MyHomePage(title: 'Bday Remind'),
       ),

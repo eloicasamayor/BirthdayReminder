@@ -172,7 +172,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.symmetric(vertical: 10),
                 children: [
-                  Text('order by:   '),
+                  Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      child: Text('order by:')),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -199,6 +201,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           : null,
                     ),
                   ),
+                  SizedBox(width: 4),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -212,6 +215,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           : null,
                     ),
                   ),
+                  SizedBox(width: 4),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -225,6 +229,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           : null,
                     ),
                   ),
+                  SizedBox(width: 5),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -238,6 +243,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           : null,
                     ),
                   ),
+                  SizedBox(width: 4),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -251,6 +257,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           : null,
                     ),
                   ),
+                  SizedBox(width: 10),
                 ],
               ),
             ),
