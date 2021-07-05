@@ -1,6 +1,7 @@
 import 'package:aniversaris/screens/aniversari_details_screen.dart';
 import 'package:flutter/material.dart';
 import '../models/aniversari.dart';
+import 'package:intl/intl.dart';
 
 class ListAniversaris extends StatelessWidget {
   final List<Aniversari> listAniversaris;
@@ -37,7 +38,7 @@ class ListAniversaris extends StatelessWidget {
             title: Text(
                 '${listAniversaris[i].nom} ${listAniversaris[i].cognom1} ${listAniversaris[i].cognom2}'),
             subtitle: Text(
-              listAniversaris[i].dataNaixement.toString().substring(0, 10),
+              DateFormat('dd-MM-yyyy').format(listAniversaris[i].dataNaixement),
             ),
           );
         });

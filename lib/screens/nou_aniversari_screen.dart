@@ -47,13 +47,39 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
     }
   }
 
+  void _editarAniversari(_data) {
+    print('EDITANT ANIVERSARI...');
+    if (_nomController.text.isEmpty || _data == null) {
+      print('error, falta algo');
+      return;
+    } else {
+      Provider.of<Aniversaris>(context, listen: false).editAniversari(
+        widget.id!,
+        _nomController.text,
+        _cognom1Controller.text,
+        _cognom2Controller.text,
+        _data,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    Aniversari? _aniversari = Provider.of<Aniversaris>(context, listen: false)
+        .aniversariFromId(widget.id!);
+    _dataNaixementEscollida = _aniversari.dataNaixement;
+    _dataNaixementStr =
+        DateFormat('dd-MM-yyyy').format(_dataNaixementEscollida!);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Aniversari? _aniversari;
     if (widget.id != null) {
       print('widget.id= ${widget.id}');
-      _aniversari =
-          Provider.of<Aniversaris>(context).aniversariFromId(widget.id!);
+      _aniversari = Provider.of<Aniversaris>(context, listen: false)
+          .aniversariFromId(widget.id!);
       _nomController.text = _aniversari.nom;
       _cognom1Controller.text = _aniversari.cognom1;
       _cognom2Controller.text = _aniversari.cognom2;
@@ -61,85 +87,98 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.editando ? 'Editando' : 'Nou Aniversari'),
+        title: Text(widget.editando ? 'Editing' : 'New Birthday'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          TextField(
-            decoration: InputDecoration(hintText: 'Name'),
-            controller: _nomController,
-          ),
-          TextField(
-            decoration: InputDecoration(hintText: 'First Surname'),
-            controller: _cognom1Controller,
-          ),
-          TextField(
-            decoration: InputDecoration(hintText: 'Second Surname'),
-            controller: _cognom2Controller,
-          ),
-          Row(
-            children: [
-              Text(
-                _dataNaixementStr == null
-                    ? 'data naixement'
-                    : _dataNaixementStr.toString(),
-              ),
-              TextButton.icon(
-                onPressed: () {
-                  DatePicker.showDatePicker(context,
-                      showTitleActions: true,
-                      minTime: DateTime(1921, 1, 1),
-                      maxTime: DateTime.now(), onChanged: (date) {
-                    print(
-                      'change $date in time zone ${date.timeZoneOffset.inHours.toString()}',
-                    );
-                  }, onConfirm: (date) {
-                    print('confirm $date');
-                    _dataNaixementEscollida = date;
-                    String formattedDate =
-                        DateFormat('dd-MM-yyyy').format(date);
-                    setState(() {
-                      _dataNaixementStr = formattedDate;
-                    });
-                  }, currentTime: DateTime.now(), locale: LocaleType.en);
-                },
-                icon: Icon(Icons.date_range_outlined),
-                label: Text('Escollir'),
-              ),
-            ],
-          ),
-          TextButton.icon(
-            onPressed: () => _guardarAniversari(_dataNaixementEscollida),
-            icon: Icon(Icons.save),
-            label: Text('Guardar'),
-          ),
-          /*
-          Stack(
-            alignment: Alignment.centerRight,
-            children: [
-              Container(
-                height: 50,
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Tags',
-                  ),
-                  controller: _tagsController,
-                  onChanged: (_) {},
+      body: Container(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            TextField(
+              decoration: InputDecoration(hintText: 'Name'),
+              controller: _nomController,
+            ),
+            TextField(
+              decoration: InputDecoration(hintText: 'First Surname'),
+              controller: _cognom1Controller,
+            ),
+            TextField(
+              decoration: InputDecoration(hintText: 'Second Surname'),
+              controller: _cognom2Controller,
+            ),
+            Row(
+              children: [
+                Text(
+                  _dataNaixementStr == null
+                      ? 'data naixement'
+                      : _dataNaixementStr.toString(),
                 ),
-              ),
-              TextButton.icon(
-                onPressed: _novaTag,
-                icon: Icon(Icons.add),
-                label: Text('Afegir'),
-              ),
-            ],
-          ),
-          Wrap(
-            children: _tagsList,
-          ),*/
-        ],
+                TextButton.icon(
+                  onPressed: () {
+                    DatePicker.showDatePicker(context,
+                        showTitleActions: true,
+                        minTime: DateTime(1921, 1, 1),
+                        maxTime: DateTime.now(), onChanged: (date) {
+                      print(
+                        'change $date in time zone ${date.timeZoneOffset.inHours.toString()}',
+                      );
+                    }, onConfirm: (date) {
+                      print('confirm $date');
+                      _dataNaixementEscollida = date;
+                      String formattedDate =
+                          DateFormat('dd-MM-yyyy').format(date);
+                      setState(() {
+                        _dataNaixementStr = formattedDate;
+                      });
+                    },
+                        currentTime: widget.editando
+                            ? _dataNaixementEscollida
+                            : DateTime.now(),
+                        locale: LocaleType.en,
+                        theme: DatePickerTheme(
+                          containerHeight: 270,
+                        ));
+                  },
+                  icon: Icon(Icons.date_range_outlined),
+                  label: Text('Choose date'),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton.icon(
+              icon: Icon(Icons.save),
+              label: Text(!widget.editando ? 'Save' : 'Update'),
+              onPressed: !widget.editando
+                  ? () => _guardarAniversari(_dataNaixementEscollida)
+                  : () => _editarAniversari(_dataNaixementEscollida),
+            ),
+            /*
+            Stack(
+              alignment: Alignment.centerRight,
+              children: [
+                Container(
+                  height: 50,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Tags',
+                    ),
+                    controller: _tagsController,
+                    onChanged: (_) {},
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: _novaTag,
+                  icon: Icon(Icons.add),
+                  label: Text('Afegir'),
+                ),
+              ],
+            ),
+            Wrap(
+              children: _tagsList,
+            ),*/
+          ],
+        ),
       ),
     );
   }

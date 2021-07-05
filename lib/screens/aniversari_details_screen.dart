@@ -1,5 +1,8 @@
+import '../providers/aniversaris.dart';
 import 'package:aniversaris/screens/nou_aniversari_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class AniversariDetailsScreen extends StatelessWidget {
   final int id;
@@ -16,24 +19,8 @@ class AniversariDetailsScreen extends StatelessWidget {
     required this.dataNaixement,
   }) : super(key: key);
 
-  Future<String?> _dialogDelete(ctx) {
-    return showDialog<String>(
-      context: ctx,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('AlertDialog Title'),
-        content: const Text('AlertDialog description'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
+  _deleteAniversari(ctx) {
+    Provider.of<Aniversaris>(ctx, listen: false).removeAniversari(id);
   }
 
   @override
@@ -60,7 +47,11 @@ class AniversariDetailsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
+                  ).then((value) {
+                    if (value == 'OK') {
+                      _deleteAniversari(context);
+                    }
+                  }).then((_) => Navigator.pop(context)),
               icon: Icon(Icons.delete)),
           IconButton(
               onPressed: () {
@@ -87,7 +78,7 @@ class AniversariDetailsScreen extends StatelessWidget {
             Text(nom),
             Text(cognom1),
             Text(cognom2),
-            Text(dataNaixement.toString()),
+            Text(DateFormat('dd-MM-yyyy').format(dataNaixement)),
           ],
         ),
       ),

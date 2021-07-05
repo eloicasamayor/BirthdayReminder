@@ -21,11 +21,16 @@ class DBHelper {
       data,
       conflictAlgorithm: sql.ConflictAlgorithm.replace,
     );
-    print('inserted ==>table=$table data=$data ');
     return id;
   }
 
-  static Future<void> remove(String table, String id) async {
+  static Future<void> update(
+      String table, Map<String, Object> data, int _id) async {
+    final db = await DBHelper.database();
+    await db.update(table, data, where: 'id = ?', whereArgs: [_id]);
+  }
+
+  static Future<void> remove(String table, int id) async {
     final db = await DBHelper.database();
     db.delete(table, where: 'id = "$id"');
   }
@@ -33,7 +38,6 @@ class DBHelper {
   static Future<List<Map<String, dynamic>>> getData(String table) async {
     print('get data');
     final db = await DBHelper.database();
-    //print('${db.query(table)}');
     return db.query(table);
   }
 }
