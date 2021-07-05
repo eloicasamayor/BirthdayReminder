@@ -292,7 +292,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) {
-                return NouAniversariScreen(false);
+                return NouAniversariScreen(editando: false);
               },
             ),
           );

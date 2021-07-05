@@ -2,12 +2,14 @@ import 'package:aniversaris/screens/nou_aniversari_screen.dart';
 import 'package:flutter/material.dart';
 
 class AniversariDetailsScreen extends StatelessWidget {
+  final int id;
   final String nom;
   final String cognom1;
   final String cognom2;
   final DateTime dataNaixement;
   const AniversariDetailsScreen({
     Key? key,
+    required this.id,
     required this.nom,
     required this.cognom1,
     required this.cognom2,
@@ -66,7 +68,10 @@ class AniversariDetailsScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return NouAniversariScreen(true);
+                      return NouAniversariScreen(
+                        editando: true,
+                        id: id,
+                      );
                     },
                   ),
                 );

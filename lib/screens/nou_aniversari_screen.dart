@@ -1,3 +1,4 @@
+import 'package:aniversaris/models/aniversari.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +8,8 @@ import '../widgets/tag.dart';
 
 class NouAniversariScreen extends StatefulWidget {
   final bool editando;
-  NouAniversariScreen(this.editando);
+  final int? id;
+  NouAniversariScreen({required this.editando, this.id});
   @override
   _NouAniversariScreenState createState() => _NouAniversariScreenState();
 }
@@ -47,6 +49,16 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Aniversari? _aniversari;
+    if (widget.id != null) {
+      print('widget.id= ${widget.id}');
+      _aniversari =
+          Provider.of<Aniversaris>(context).aniversariFromId(widget.id!);
+      _nomController.text = _aniversari.nom;
+      _cognom1Controller.text = _aniversari.cognom1;
+      _cognom2Controller.text = _aniversari.cognom2;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.editando ? 'Editando' : 'Nou Aniversari'),

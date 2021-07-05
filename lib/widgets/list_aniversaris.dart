@@ -21,6 +21,7 @@ class ListAniversaris extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => AniversariDetailsScreen(
+                      id: listAniversaris[i].id,
                       nom: listAniversaris[i].nom,
                       cognom1: listAniversaris[i].cognom1,
                       cognom2: listAniversaris[i].cognom2,

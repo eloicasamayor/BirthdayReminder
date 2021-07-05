@@ -14,6 +14,10 @@ class Aniversaris with ChangeNotifier {
     return [..._aniversaris];
   }
 
+  Aniversari aniversariFromId(int id) {
+    return _aniversaris.firstWhere((aniversari) => aniversari.id == id);
+  }
+
   List<Aniversari> aniversarisOrdenados(orderAniversariBy orden) {
     switch (orden) {
       case orderAniversariBy.id:
