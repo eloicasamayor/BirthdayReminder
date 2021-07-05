@@ -1,8 +1,10 @@
-import '../providers/aniversaris.dart';
-import 'package:aniversaris/screens/nou_aniversari_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/aniversaris.dart';
+import './nou_aniversari_screen.dart';
+import '../helpers/notification_service.dart';
 
 class AniversariDetailsScreen extends StatelessWidget {
   final int id;
@@ -54,20 +56,32 @@ class AniversariDetailsScreen extends StatelessWidget {
                   }).then((_) => Navigator.pop(context)),
               icon: Icon(Icons.delete)),
           IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return NouAniversariScreen(
-                        editando: true,
-                        id: id,
-                      );
-                    },
-                  ),
-                );
-              },
-              icon: Icon(Icons.edit)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return NouAniversariScreen(
+                      editando: true,
+                      id: id,
+                    );
+                  },
+                ),
+              );
+            },
+            icon: Icon(Icons.edit),
+          ),
+          IconButton(
+            onPressed: () async {
+              await NotificationService().flutterLocalNotificationsPlugin.show(
+                  12345,
+                  "Today is ---- birthday!",
+                  "Remember to congratulate ----.",
+                  NotificationService.platformChannelSpecifics,
+                  payload: 'data');
+            },
+            icon: Icon(Icons.notifications),
+          ),
         ],
       ),
       body: Container(
