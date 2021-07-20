@@ -12,55 +12,6 @@ class LateralMenu extends StatelessWidget {
             SizedBox(
               height: 50,
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              Text(
-                'EDIT',
-                textAlign: TextAlign.end,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ]),
-            ListTile(
-              dense: true,
-              minLeadingWidth: 10,
-              contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-              leading: Icon(
-                Icons.crop_square_outlined,
-              ),
-              title: Text(
-                'Today',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-            ),
-            ListTile(
-              dense: true,
-              minLeadingWidth: 10,
-              contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-              leading: Icon(
-                Icons.bookmark_outline,
-              ),
-              title: Text(
-                'Read Later',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-            ),
-            ListTile(
-              dense: true,
-              minLeadingWidth: 10,
-              contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-              leading: Icon(
-                Icons.upgrade_outlined,
-              ),
-              title: Text(
-                'Updgrade',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
             Text(
               'Feeds',
               style: TextStyle(

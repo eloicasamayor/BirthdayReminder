@@ -4,6 +4,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../providers/aniversaris.dart';
+import '../helpers/notification_service.dart';
 import '../widgets/tag.dart';
 
 class NouAniversariScreen extends StatefulWidget {
@@ -47,12 +48,14 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
       );
       return;
     } else {
-      Provider.of<Aniversaris>(context, listen: false).addAniversari(
-        _nomController.text,
-        _cognom1Controller.text,
-        _cognom2Controller.text,
-        _data,
-      );
+      Provider.of<Aniversaris>(context, listen: false)
+          .addAniversari(
+            _nomController.text,
+            _cognom1Controller.text,
+            _cognom2Controller.text,
+            _data,
+          )
+          .then((value) => Navigator.of(context).pop());
     }
   }
 
@@ -190,7 +193,9 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
                   icon: Icon(Icons.save),
                   label: Text((!widget.editando) ? 'Save' : 'Update'),
                   onPressed: !widget.editando
-                      ? () => _guardarAniversari(_dataNaixementEscollida)
+                      ? () {
+                          _guardarAniversari(_dataNaixementEscollida);
+                        }
                       : () => _editarAniversari(_dataNaixementEscollida),
                 ),
               ),

@@ -17,6 +17,8 @@ class NotificationService {
     final AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
 
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('Europe/Madrid'));
     /* final IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings(
       requestSoundPermission: false,
@@ -31,8 +33,6 @@ class NotificationService {
       iOS: null,
       macOS: null,
     );
-
-    tz.initializeTimeZones();
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: selectNotification);
@@ -51,4 +51,36 @@ class NotificationService {
 
   static const NotificationDetails platformChannelSpecifics =
       NotificationDetails(android: androidPlatformChannelSpecifics);
+
+  void sheduleNotification(int id, DateTime date) async {
+    int year = DateTime.now().year;
+    var bDayThisYear = DateTime(year, date.month, date.day);
+    var nextBDay = bDayThisYear;
+    if (bDayThisYear.isBefore(DateTime.now())) {
+      nextBDay = DateTime(
+        year + 1,
+        date.month,
+        date.day,
+      );
+    }
+    var sheduledDate = tz.TZDateTime.local(
+      nextBDay.year,
+      nextBDay.month,
+      nextBDay.day,
+      9,
+      0,
+    );
+    UILocalNotificationDateInterpretation uilLocalNotDI =
+        UILocalNotificationDateInterpretation.absoluteTime;
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      id,
+      "App",
+      "Notification",
+      sheduledDate,
+      platformChannelSpecifics,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation: uilLocalNotDI,
+    );
+    print('sheduledDate -------> ' + sheduledDate.toString());
+  }
 }
