@@ -1,6 +1,8 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:aniversaris/models/aniversari.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:intl/intl.dart';
 
 class NotificationService {
   static final NotificationService _notificationService =
@@ -52,7 +54,9 @@ class NotificationService {
   static const NotificationDetails platformChannelSpecifics =
       NotificationDetails(android: androidPlatformChannelSpecifics);
 
-  void sheduleNotification(int id, DateTime date) async {
+  void sheduleNotification(Aniversari aniversari) async {
+    final date = aniversari.dataNaixement;
+    final id = aniversari.id;
     int year = DateTime.now().year;
     var bDayThisYear = DateTime(year, date.month, date.day);
     var nextBDay = bDayThisYear;
@@ -73,14 +77,31 @@ class NotificationService {
     UILocalNotificationDateInterpretation uilLocalNotDI =
         UILocalNotificationDateInterpretation.absoluteTime;
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      id,
-      "App",
-      "Notification",
-      sheduledDate,
-      platformChannelSpecifics,
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation: uilLocalNotDI,
-    );
+        id,
+        "Today is ${aniversari.nom} ${aniversari.cognom1} ${aniversari.cognom2} birthday",
+        "Don't forget to congratulate ${aniversari.nom}",
+        sheduledDate,
+        platformChannelSpecifics,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation: uilLocalNotDI,
+        payload: DateFormat('dd-MM-yyyy').format(sheduledDate));
     print('sheduledDate -------> ' + sheduledDate.toString());
+  }
+
+  /* void editsheduleNotification(Aniversari aniversari) async {
+    flutterLocalNotificationsPlugin.
+  } */
+
+  void removeSheduleNotification(int id) {
+    flutterLocalNotificationsPlugin.cancel(id);
+  }
+
+  void listAllPendingNotifications() async {
+    List<PendingNotificationRequest> listaNotif =
+        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    for (int i = 0; i < listaNotif.length; i++) {
+      print(
+          '${listaNotif[i].title}  ${listaNotif[i].body}  ${listaNotif[i].payload}');
+    }
   }
 }

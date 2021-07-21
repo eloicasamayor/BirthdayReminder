@@ -36,6 +36,14 @@ class MyApp extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20)),
             ),
           ),
+          textTheme: TextTheme(
+            subtitle1: TextStyle(
+              fontSize: 18,
+            ),
+            subtitle2: TextStyle(
+              fontSize: 16,
+            ),
+          ),
         ),
         home: MyHomePage(title: 'Bday Remind'),
       ),

@@ -55,7 +55,7 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
             _cognom2Controller.text,
             _data,
           )
-          .then((value) => Navigator.of(context).pop());
+          .then((value) => Navigator.pop(context));
     }
   }
 
@@ -75,24 +75,31 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
 
       return;
     } else {
-      Provider.of<Aniversaris>(context, listen: false).editAniversari(
-        widget.id!,
-        _nomController.text,
-        _cognom1Controller.text,
-        _cognom2Controller.text,
-        _data,
-      );
+      Provider.of<Aniversaris>(context, listen: false)
+          .editAniversari(
+            widget.id!,
+            _nomController.text,
+            _cognom1Controller.text,
+            _cognom2Controller.text,
+            _data,
+          )
+          .then((value) => Navigator.pop(context, true));
+      ;
     }
   }
 
   @override
   void initState() {
+    print('init');
     if (widget.id != null) {
       Aniversari? _aniversari = Provider.of<Aniversaris>(context, listen: false)
           .aniversariFromId(widget.id!);
       _dataNaixementEscollida = _aniversari.dataNaixement;
       _dataNaixementStr =
-          DateFormat('dd-MM-yyyy').format(_dataNaixementEscollida!);
+          DateFormat('dd / MM / yyyy').format(_dataNaixementEscollida!);
+      _nomController.text = _aniversari.nom;
+      _cognom1Controller.text = _aniversari.cognom1;
+      _cognom2Controller.text = _aniversari.cognom2;
     }
 
     super.initState();
@@ -105,14 +112,20 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
       print('widget.id= ${widget.id}');
       _aniversari = Provider.of<Aniversaris>(context, listen: false)
           .aniversariFromId(widget.id!);
-      _nomController.text = _aniversari.nom;
-      _cognom1Controller.text = _aniversari.cognom1;
-      _cognom2Controller.text = _aniversari.cognom2;
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.editando ? 'Editing' : 'New Birthday'),
+        leading: BackButton(
+          onPressed: () => Navigator.pop(context, false),
+        ),
+        actions: [
+          IconButton(
+              onPressed: () =>
+                  NotificationService().listAllPendingNotifications(),
+              icon: Icon(Icons.notifications))
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -123,7 +136,9 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
           child: Column(
             children: [
               TextField(
-                decoration: InputDecoration(hintText: 'Name'),
+                decoration: InputDecoration(
+                  hintText: 'Name',
+                ),
                 controller: _nomController,
               ),
               TextField(
@@ -134,27 +149,43 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
                 decoration: InputDecoration(hintText: 'Second Surname'),
                 controller: _cognom2Controller,
               ),
+              SizedBox(
+                height: 10,
+              ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     _dataNaixementStr == null
-                        ? 'data naixement'
+                        ? 'Birth Date'
                         : _dataNaixementStr.toString(),
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                   TextButton.icon(
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.grey[200]!),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                    ),
                     onPressed: () {
                       DatePicker.showDatePicker(context,
                           showTitleActions: true,
                           minTime: DateTime(1921, 1, 1),
                           maxTime: DateTime.now(), onChanged: (date) {
-                        print(
+                        /* print(
                           'change $date in time zone ${date.timeZoneOffset.inHours.toString()}',
-                        );
+                        ); */
                       }, onConfirm: (date) {
-                        print('confirm $date');
+                        //print('confirm $date');
                         _dataNaixementEscollida = date;
                         String formattedDate =
-                            DateFormat('dd-MM-yyyy').format(date);
+                            DateFormat('dd / MM / yyyy').format(date);
                         setState(() {
                           _dataNaixementStr = formattedDate;
                         });
@@ -168,7 +199,10 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
                           ));
                     },
                     icon: Icon(Icons.date_range_outlined),
-                    label: Text('Choose date'),
+                    label: Text(
+                      'Choose birth date',
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
                   ),
                 ],
               ),
@@ -183,7 +217,7 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
                     textStyle: MaterialStateProperty.all<TextStyle>(
                         TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.grey[200]!),
+                        MaterialStateProperty.all<Color>(Colors.amber),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),

@@ -1,3 +1,4 @@
+import 'package:aniversaris/screens/nou_aniversari_screen.dart';
 import 'package:flutter/material.dart';
 
 class LateralMenu extends StatelessWidget {
@@ -10,10 +11,38 @@ class LateralMenu extends StatelessWidget {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             SizedBox(
+              height: 40,
+            ),
+            Container(
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/app_icon.png',
+                    fit: BoxFit.cover,
+                    height: 60,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Birthday Reminder',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      fontSize: 30,
+                      height: .95,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
               height: 50,
             ),
-            Text(
-              'Feeds',
+            const Text(
+              'Birthdays',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -39,7 +68,7 @@ class LateralMenu extends StatelessWidget {
                 Icons.arrow_forward_ios_rounded,
               ),
               title: Text(
-                'Internet and Software',
+                'Family',
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
@@ -51,7 +80,7 @@ class LateralMenu extends StatelessWidget {
                 Icons.arrow_forward_ios_rounded,
               ),
               title: Text(
-                'Flutter news',
+                'Friends',
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
@@ -63,13 +92,21 @@ class LateralMenu extends StatelessWidget {
                 Icons.arrow_forward_ios_rounded,
               ),
               title: Text(
-                'Frontend development',
+                'Work',
                 style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
             InkWell(
               onTap: () {
                 Navigator.of(context).pop();
+
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) {
+                      return NouAniversariScreen(editando: false);
+                    },
+                  ),
+                );
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -81,8 +118,8 @@ class LateralMenu extends StatelessWidget {
                 padding: EdgeInsets.all(10),
                 margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                 child: Center(
-                  child: Text(
-                    'ADD CONTENT',
+                  child: const Text(
+                    'ADD BIRTHDAY',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -90,46 +127,6 @@ class LateralMenu extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-            ),
-            ListTile(
-              dense: true,
-              minLeadingWidth: 10,
-              contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-              leading: Icon(Icons.access_time),
-              title: Text(
-                'Recently Read',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-            ),
-            ListTile(
-              dense: true,
-              minLeadingWidth: 10,
-              contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-              leading: Icon(Icons.wb_sunny_outlined),
-              title: Text(
-                'Choose Theme',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-            ),
-            ListTile(
-              dense: true,
-              minLeadingWidth: 10,
-              contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-              leading: Icon(Icons.electrical_services),
-              title: Text(
-                'Integrations',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-            ),
-            ListTile(
-              dense: true,
-              minLeadingWidth: 10,
-              contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-              leading: Icon(Icons.card_giftcard),
-              title: Text(
-                'New Features',
-                style: Theme.of(context).textTheme.subtitle1,
               ),
             ),
             ListTile(
