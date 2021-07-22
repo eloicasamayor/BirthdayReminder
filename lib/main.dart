@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        home: MyHomePage(title: 'Bday Remind'),
+        home: MyHomePage(title: 'Birthday Reminder'),
       ),
     );
   }
