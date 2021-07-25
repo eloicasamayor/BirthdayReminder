@@ -4,7 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import './providers/aniversaris.dart';
+import './providers/tags.dart';
 import './helpers/notification_service.dart';
+
+import './screens/settings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,11 +20,18 @@ class MyApp extends StatelessWidget {
       FlutterLocalNotificationsPlugin();
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => Aniversaris(),
+    return MultiProvider(
+      providers: [
+        /* ChangeNotifierProvider(
+          create: (ctx) => Tags(),
+        ), */
+        ChangeNotifierProvider(
+          create: (ctx) => Aniversaris(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Bday Remind',
+        title: 'Birthday Reminder',
         theme: ThemeData(
           primarySwatch: Colors.amber,
           appBarTheme: AppBarTheme(color: Colors.grey[200]),
@@ -46,6 +56,10 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: MyHomePage(title: 'Birthday Reminder'),
+        routes: {
+          // When navigating to the "/second" route, build the SecondScreen widget.
+          '/settings': (context) => SettingsScreen(),
+        },
       ),
     );
   }

@@ -74,6 +74,7 @@ class NotificationService {
       9,
       0,
     );
+
     UILocalNotificationDateInterpretation uilLocalNotDI =
         UILocalNotificationDateInterpretation.absoluteTime;
     await flutterLocalNotificationsPlugin.zonedSchedule(

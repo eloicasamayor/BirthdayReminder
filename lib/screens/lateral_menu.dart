@@ -138,6 +138,7 @@ class LateralMenu extends StatelessWidget {
                 'Settings',
                 style: Theme.of(context).textTheme.subtitle1,
               ),
+              onTap: () => Navigator.of(context).pushNamed('/settings'),
             ),
             ListTile(
               dense: true,

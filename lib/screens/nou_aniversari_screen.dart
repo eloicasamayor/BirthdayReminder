@@ -1,11 +1,12 @@
 import 'package:aniversaris/models/aniversari.dart';
+//import 'package:aniversaris/widgets/select_tag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../providers/aniversaris.dart';
 import '../helpers/notification_service.dart';
-import '../widgets/tag.dart';
+//import '../widgets/tag.dart';
 
 class NouAniversariScreen extends StatefulWidget {
   final bool editando;
@@ -84,7 +85,6 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
             _data,
           )
           .then((value) => Navigator.pop(context, true));
-      ;
     }
   }
 
@@ -206,6 +206,11 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
                   ),
                 ],
               ),
+              /* SizedBox(
+                height: 10,
+              ),
+              Text('Tags'),
+              SelectTag(), */
               SizedBox(
                 height: 40,
               ),
