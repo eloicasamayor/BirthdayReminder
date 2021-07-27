@@ -85,7 +85,7 @@ class Aniversaris with ChangeNotifier {
         dataNaixement: dataNaixementEscollida,
       );
       _aniversaris.add(nouAniversari);
-      NotificationService().sheduleNotification(nouAniversari);
+      NotificationService().sheduleNewNotification(nouAniversari);
     });
 
     notifyListeners();
@@ -129,7 +129,7 @@ class Aniversaris with ChangeNotifier {
       _aniversaris.removeAt(indexToReplace);
       _aniversaris.insert(indexToReplace, updatedAniversari);
       NotificationService().removeSheduleNotification(updatedAniversari.id);
-      NotificationService().sheduleNotification(updatedAniversari);
+      NotificationService().sheduleNewNotification(updatedAniversari);
     });
 
     notifyListeners();

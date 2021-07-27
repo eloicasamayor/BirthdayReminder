@@ -140,14 +140,17 @@ class _NouAniversariScreenState extends State<NouAniversariScreen> {
                   hintText: 'Name',
                 ),
                 controller: _nomController,
+                textInputAction: TextInputAction.next,
               ),
               TextField(
                 decoration: InputDecoration(hintText: 'First Surname'),
                 controller: _cognom1Controller,
+                textInputAction: TextInputAction.next,
               ),
               TextField(
                 decoration: InputDecoration(hintText: 'Second Surname'),
                 controller: _cognom2Controller,
+                textInputAction: TextInputAction.next,
               ),
               SizedBox(
                 height: 10,

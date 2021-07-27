@@ -7,7 +7,7 @@ import './providers/aniversaris.dart';
 import './providers/tags.dart';
 import './helpers/notification_service.dart';
 
-import './screens/settings.dart';
+import 'screens/settings_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         /* ChangeNotifierProvider(
           create: (ctx) => Tags(),
         ), */
+
         ChangeNotifierProvider(
           create: (ctx) => Aniversaris(),
         ),
