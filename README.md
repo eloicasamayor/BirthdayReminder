@@ -1,20 +1,23 @@
-# Bday Reminder
+# Birthday Reminder
 
-A  Flutter project.
+Open beta published on [Google Play](https://play.google.com/store/apps/details?id=com.cofoi_apps.birthday_reminder)
 
-## The idea
+![birthday reminder app icon](assets\images\icon.png)
+
+## What it does
 
 Save your friends birthdays so the app can remind you to congratulate them.
 
 ## Features
 - Add, edit, delete birthdays (you set the name, surnames and the birth date)
 - Persistend data stored locally in the device
-- Local notification the day of birthday, at 9:00 local time.
+- Local notification the day of birthday.
+- Set the time of the day you want to be notified.
 - Instant search
 - Order by id, name, surtame 1, surname2, birth date or month
-- See birthday details
-- Nice and comfortable date picker
-- Swipe to delete on the main list view (and confirm the alert)
-- Delete and edit options in the details screen
-- Edit and create use the same screen widget.
-- Nice branded lateral screen.
+- See birthday details.
+
+## Upcoming features
+- Home screen with upcoming birthdays
+- Set groups / tags
+- Export to Google Calendar
