@@ -2,7 +2,6 @@
 
 Open beta published on [Google Play](https://play.google.com/store/apps/details?id=com.cofoi_apps.birthday_reminder)
 
-![birthday reminder app icon](./assets/images/icon.png)
 <img src="./assets/images/icon.png" alt="birthday reminder app icon" width="200"/>
 
 ## What it does
